@@ -27,7 +27,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'ecom',
+    'django_extensions',
+    'debug_toolbar',
+    #'ecom',
+    'Main',
 
 ]
 
@@ -39,14 +42,29 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    
 ]
+
+INTERNAL_IPS = [
+    '127.0.0.1'
+]
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_COLLAPSED': True
+}
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 18000
+SESSION_SAVE_EVERY_REQUEST = True
+
 
 ROOT_URLCONF = 'HelpDesk.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'Templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -106,7 +124,53 @@ USE_L10N = True
 USE_TZ = True
 
 
+REST_FRAMEWORK = {
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    # ]
+}
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), ) 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+MEDIA_URL = '/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+#FS_IMAGE_UPLOADS = os.path.join(MEDIA_ROOT,'item_pics/')
+#FS_IMAGE_URL = os.path.join(MEDIA_URL,'item_pics/')
+
+FS_ECOM_ITEM_THUMBNAIL_UPLOADS = os.path.join(MEDIA_ROOT,'item_card_image/')
+FS_ECOM_ITEM_THUMBNAIL_URL = os.path.join(MEDIA_URL,'item_card_image/')
+
+FS_ECOM_ITEM_IMAGE_UPLOADS = os.path.join(MEDIA_ROOT,'ecom_item_image/')
+FS_ECOM_ITEM_IMAGE_URL = os.path.join(MEDIA_URL,'ecom_item_image/')
+
+LOGIN_REDIRECT_URL='/userauth/home/'
+LOGIN_URL = 'loginpage'
+
+#* For Email Sending
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mail.netdefense.com.bd'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'poserp@netdefense.com.bd'
+EMAIL_HOST_PASSWORD = 'poserp@123'
+
+CSRF_COOKIE_SECURE  = False
+
+WEBPUSH_SETTINGS = {
+    "VAPID_PUBLIC_KEY": "BEn5ZzZC1GE0ZspGIjYjhX0e41Cq7SF5uKL7HpWlOd3hYyivefIHrSCmcuaiXgDPSAShhWbjUg0-cn_fmU13luQ",
+    "VAPID_PRIVATE_KEY":"KLl2QCvWXuTLqHm-EveeV1Fp3NPVW5VZTnNjXWEjqk4",
+    "VAPID_ADMIN_EMAIL": "narmiemon@gmail.com"
+}
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
